@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinanceHub - Personal Finance Manager</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Auth Screen -->
+    <div id="authScreen" class="screen active">
+        <div class="auth-container">
+            <h1>💰 FinanceHub</h1>
+            <p class="tagline">Your All-in-One Financial Manager</p>
+            
+            <div class="auth-tabs">
+                <button class="tab-btn active" data-tab="login">Login</button>
+                <button class="tab-btn" data-tab="signup">Sign Up</button>
+            </div>
+            
+            <form id="loginForm" class="auth-form active">
+                <input type="email" id="loginEmail" placeholder="Email" required>
+                <input type="password" id="loginPassword" placeholder="Password" required>
+                <button type="submit" class="btn-primary">Login</button>
+            </form>
+            
+            <form id="signupForm" class="auth-form">
+                <input type="text" id="signupName" placeholder="Full Name" required>
+                <input type="email" id="signupEmail" placeholder="Email" required>
+                <input type="password" id="signupPassword" placeholder="Password" required>
+                <button type="submit" class="btn-primary">Sign Up</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="appScreen" class="screen">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="nav-brand">FinanceHub</div>
+            <button class="nav-toggle" id="navToggle">☰</button>
+        </nav>
+
+        <div class="app-container">
+            <!-- Sidebar -->
+            <aside class="sidebar" id="sidebar">
+                <button class="nav-item active" data-view="dashboard">📊 Dashboard</button>
+                <button class="nav-item" data-view="transactions">💳 Transactions</button>
+                <button class="nav-item" data-view="budget">💰 Budget</button>
+                <button class="nav-item" data-view="goals">🎯 Goals & SIP</button>
+                <button class="nav-item" data-view="portfolio">📈 Portfolio</button>
+                <button class="nav-item" data-view="loans">🏦 Loans & EMI</button>
+                <button class="nav-item" data-view="groups">👥 Split Bills</button>
+                <button class="nav-item" data-view="habits">✅ Habits</button>
+                <button class="nav-item" data-view="salary">💵 Salary</button>
+                <button class="nav-item" data-view="reports">📄 Reports</button>
+                <button class="nav-item logout" id="logoutBtn">🚪 Logout</button>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="main-content">
+                <!-- Dashboard View -->
+                <div id="dashboardView" class="view active">
+                    <h2>Dashboard</h2>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <h3>Monthly Spending</h3>
+                            <p class="stat-value" id="monthlySpending">₹0</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Budget Remaining</h3>
+                            <p class="stat-value" id="budgetRemaining">₹0</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Monthly Income</h3>
+                            <p class="stat-value income" id="monthlyIncome">₹0</p>
+                        </div>
+                    </div>
+                    <button class="btn-primary btn-large" id="quickAddExpense">+ Add Expense</button>
+                    <div class="chart-container">
+                        <canvas id="expenseChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Transactions View -->
+                <div id="transactionsView" class="view">
+                    <h2>Transactions</h2>
+                    <button class="btn-primary" id="addTransactionBtn">+ Add Transaction</button>
+                    <button class="btn-secondary" id="importCSV">Import CSV</button>
+                    <button class="btn-secondary" id="exportCSV">Export CSV</button>
+                    
+                    <div class="filters">
+                        <select id="filterType">
+                            <option value="">All Types</option>
+                            <option value="income">Income</option>
+                            <option value="expense">Expense</option>
+                        </select>
+                        <select id="filterCategory">
+                            <option value="">All Categories</option>
+                            <option value="Food">Food</option>
+                            <option value="Rent">Rent</option>
+                            <option value="Travel">Travel</option>
+                            <option value="Petrol">Petrol</option>
+                            <option value="Bills">Bills</option>
+                            <option value="Shopping">Shopping</option>
+                            <option value="Salary">Salary</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <input type="month" id="filterMonth">
+                    </div>
+                    
+                    <div id="transactionsList"></div>
+                </div>
+
+                <!-- Budget View -->
+                <div id="budgetView" class="view">
+                    <h2>Budget Manager</h2>
+                    <button class="btn-primary" id="addBudgetBtn">+ Set Budget</button>
+                    <div id="budgetList"></div>
+                </div>
+
+                <!-- Goals View -->
+                <div id="goalsView" class="view">
+                    <h2>Goals & SIP Calculator</h2>
+                    
+                    <div class="calculator-section">
+                        <h3>SIP Calculator</h3>
+                        <div class="calc-form">
+                            <input type="number" id="sipMonthly" placeholder="Monthly Investment">
+                            <input type="number" id="sipRate" placeholder="Expected Return (%)">
+                            <input type="number" id="sipYears" placeholder="Years">
+                            <button class="btn-secondary" id="calcSIP">Calculate</button>
+                            <p id="sipResult"></p>
+                        </div>
+                    </div>
+                    
+                    <button class="btn-primary" id="addGoalBtn">+ Add Goal</button>
+                    <div id="goalsList"></div>
+                </div>
+
+                <!-- Portfolio View -->
+                <div id="portfolioView" class="view">
+                    <h2>Portfolio Analyzer</h2>
+                    <button class="btn-primary" id="addPortfolioBtn">+ Add Investment</button>
+                    <div id="portfolioList"></div>
+                    <canvas id="portfolioChart"></canvas>
+                </div>
+
+                <!-- Loans View -->
+                <div id="loansView" class="view">
+                    <h2>Loans & EMI</h2>
+                    
+                    <div class="calculator-section">
+                        <h3>EMI Calculator</h3>
+                        <div class="calc-form">
+                            <input type="number" id="loanAmount" placeholder="Loan Amount">
+                            <input type="number" id="loanRate" placeholder="Interest Rate (%)">
+                            <input type="number" id="loanTenure" placeholder="Tenure (months)">
+                            <button class="btn-secondary" id="calcEMI">Calculate EMI</button>
+                            <p id="emiResult"></p>
+                        </div>
+                    </div>
+                    
+                    <button class="btn-primary" id="addLoanBtn">+ Add Loan</button>
+                    <div id="loansList"></div>
+                </div>
+
+                <!-- Groups View -->
+                <div id="groupsView" class="view">
+                    <h2>Split Bills</h2>
+                    <button class="btn-primary" id="addGroupBtn">+ Create Group</button>
+                    <div id="groupsList"></div>
+                </div>
+
+                <!-- Habits View -->
+                <div id="habitsView" class="view">
+                    <h2>Financial Habits</h2>
+                    <button class="btn-primary" id="addHabitBtn">+ Add Habit</button>
+                    <div id="habitsList"></div>
+                </div>
+
+                <!-- Salary View -->
+                <div id="salaryView" class="view">
+                    <h2>Salary Planner</h2>
+                    <div class="salary-form">
+                        <input type="number" id="salaryAmount" placeholder="Monthly Salary">
+                        <h3>Allocation</h3>
+                        <label>Needs (50%): <input type="number" id="needsPercent" value="50">%</label>
+                        <label>Wants (30%): <input type="number" id="wantsPercent" value="30">%</label>
+                        <label>Savings (20%): <input type="number" id="savingsPercent" value="20">%</label>
+                        <button class="btn-primary" id="saveSalary">Save Plan</button>
+                    </div>
+                    <div id="salaryBreakdown"></div>
+                </div>
+
+                <!-- Reports View -->
+                <div id="reportsView" class="view">
+                    <h2>Reports</h2>
+                    <button class="btn-primary" id="downloadPDF">Download PDF</button>
+                    <div class="chart-container">
+                        <canvas id="yearlyChart"></canvas>
+                    </div>
+                    <div id="reportSummary"></div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
